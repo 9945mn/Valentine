@@ -51,7 +51,7 @@ export default function ValentineProposal(): JSX.Element {
           transition={{ duration: 1 }}
           className="flex flex-col items-center"
         >
-          <h1 className="text-3xl font-bold text-pink-600">Yay! ❤️ Can't wait to celebrate with you! 🎉</h1>
+          <h1 className="text-3xl font-bold text-pink-600">Yay! ❤️ Can`t wait to celebrate with you! 🎉</h1>
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: -20, opacity: 1 }}
