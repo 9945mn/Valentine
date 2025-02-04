@@ -18,70 +18,101 @@ export default function ValentineProposal(): JSX.Element {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-red-100 text-center p-4">
+    <div className="relative flex flex-col items-center justify-center min-h-screen text-center p-4 overflow-hidden">
       {!accepted ? (
-        <>
-          <motion.h1 
-            className="text-3xl font-bold mb-6 text-red-800" 
-            initial={{ scale: 0 }} 
-            animate={{ scale: 1 }} 
-            transition={{ duration: 0.5 }}
-          >
-            Bini, will you be my Valentine? ❤️
-          </motion.h1>
-          <div className="flex space-x-6 relative">
-            <button
-              onClick={() => setAccepted(true)}
-              className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 text-lg"
-            >
-              Yes
-            </button>
-            <motion.button
-              className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 text-lg rounded-full"
-              animate={{ x: noButtonPosition }}
-              transition={{ type: "spring", stiffness: 300, damping: 10 }} // Faster movement
-              onMouseEnter={moveNoButton}
-            >
-              No
-  </motion.button>
-          </div>
-        </>
+        <div
+          className="absolute inset-0 w-full h-full bg-cover bg-center"
+          style={{
+            backgroundImage: "url('/Background.JPG')",
+            backgroundSize: "auto", // Makes the image fill the container without distortion
+            backgroundPosition: "center", // Centers the image
+            backgroundRepeat: "no-repeat",
+            filter: "blur(3px) brightness(0.7)",
+          }}
+        ></div>
       ) : (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1 }}
-          className="flex flex-col items-center"
+        <video
+          className="absolute inset-0 w-full h-full object-fit" // Ensures the video covers the entire area
+          autoPlay
+          loop
+          controls
+          style={{ filter: "brightness(0.7)" }}
         >
-          <h1 className="text-3xl font-bold text-pink-600">Yay! ❤️ Can`t wait to celebrate with you! 🎉</h1>
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: -20, opacity: 1 }}
-            transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
-            className="mt-4"
-          >
-            🎈🎉💖
-          </motion.div>
-          <div className="flex space-x-4 mt-6">
-            <motion.img 
-              src="Image1.JPG" 
-              alt="Romantic moment 1" 
-              className="w-64 rounded-lg shadow-lg"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 2 }}
-            />
-            <motion.img 
-              src="/Image2.JPG" 
-              alt="Romantic moment 2" 
-              className="w-64 rounded-lg shadow-lg"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 2 }}
-            />
-          </div>
-        </motion.div>
+          <source src="/romantic_video.mp4" type="video/mp4" />
+        </video>
       )}
+      <div className="relative z-10 flex flex-col items-center">
+        {!accepted ? (
+          <>
+            <motion.h1
+              className="text-4xl md:text-5xl font-bold mb-6 text-white drop-shadow-lg"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              Bini, will you be my Valentine? ❤️
+            </motion.h1>
+            <div className="flex space-x-6 relative">
+              <button
+                onClick={() => setAccepted(true)}
+                className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 text-lg rounded-full shadow-lg"
+              >
+                Yes
+              </button>
+              <motion.button
+                className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 text-lg rounded-full shadow-lg"
+                animate={{ x: noButtonPosition }}
+                transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                onMouseEnter={moveNoButton}
+              >
+                No
+              </motion.button>
+            </div>
+          </>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+            className="flex flex-col items-center"
+          >
+            <motion.h1
+              className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg"
+              initial={{ y: 0 }}
+              animate={{ y: [-10, 10, -10] }}
+              transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+            >
+              Yay! ❤️ Can’t wait to celebrate with you! 🎉
+            </motion.h1>
+            <motion.div
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: [-20, 20, -20], opacity: 1 }}
+              transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
+              className="mt-4 text-3xl"
+            >
+              🎈🎉💖
+            </motion.div>
+            <div className="flex space-x-4 mt-6">
+              <motion.img
+                src="/Image1.JPG"
+                alt="Romantic moment 1"
+                className="w-64 rounded-lg shadow-lg opacity-70"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 0.7, y: [-10, 10, -10] }}
+                transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+              />
+              <motion.img
+                src="/Image2.JPG"
+                alt="Romantic moment 2"
+                className="w-64 rounded-lg shadow-lg opacity-70"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 0.7, y: [-10, 10, -10] }}
+                transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+              />
+            </div>
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 }
