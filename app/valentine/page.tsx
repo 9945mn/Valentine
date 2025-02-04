@@ -64,7 +64,7 @@ export default function ValentineProposal(): JSX.Element {
           </motion.div>
           <div className="flex space-x-4 mt-6">
             <motion.img 
-              src="/Image1.jpg" 
+              src="Image1.JPG" 
               alt="Romantic moment 1" 
               className="w-64 rounded-lg shadow-lg"
               initial={{ opacity: 0 }}
@@ -72,7 +72,7 @@ export default function ValentineProposal(): JSX.Element {
               transition={{ duration: 2 }}
             />
             <motion.img 
-              src="/Image2.jpg" 
+              src="/Image2.JPG" 
               alt="Romantic moment 2" 
               className="w-64 rounded-lg shadow-lg"
               initial={{ opacity: 0 }}
