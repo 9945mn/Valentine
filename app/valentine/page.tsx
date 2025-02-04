@@ -22,7 +22,7 @@ export default function ValentineProposal(): JSX.Element {
       {!accepted ? (
         <>
           <motion.h1 
-            className="text-3xl font-bold mb-6" 
+            className="text-3xl font-bold mb-6 text-red-800" 
             initial={{ scale: 0 }} 
             animate={{ scale: 1 }} 
             transition={{ duration: 0.5 }}
@@ -39,11 +39,11 @@ export default function ValentineProposal(): JSX.Element {
             <motion.button
               className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 text-lg rounded-full"
               animate={{ x: noButtonPosition }}
-              transition={{ type: "spring", stiffness: 100 }}
+              transition={{ type: "spring", stiffness: 300, damping: 10 }} // Faster movement
               onMouseEnter={moveNoButton}
             >
               No
-            </motion.button>
+  </motion.button>
           </div>
         </>
       ) : (
