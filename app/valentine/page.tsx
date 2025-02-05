@@ -79,7 +79,7 @@ export default function ValentineProposal(): JSX.Element {
             controls
             style={{ filter: "brightness(0.7)" }}
           >
-            <source src="/romantic_video.mp4" type="video/mp4" />
+            <source src="/romantic_video.MP4" type="video/mp4" />
           </video>
         )}
         <div className="relative z-10 flex flex-col items-center">
