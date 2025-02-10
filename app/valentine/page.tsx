@@ -1,6 +1,6 @@
 "use client";
 
-import { JSX, useState, useEffect } from "react";
+import { JSX, useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
@@ -11,18 +11,18 @@ export default function ValentineProposal(): JSX.Element {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   const images = ["/Image1.JPG", "/Image2.JPG", "/Image3.JPG"];
-  const totalAssets = images.length + 1;
+  const totalAssets = images.length;
   const [loadedCount, setLoadedCount] = useState<number>(0);
-  const loadedAssets = new Set();
+  const loadedAssets = useRef(new Set());
 
   useEffect(() => {
     images.forEach((src) => {
-      if (loadedAssets.has(src)) return;
-
-      const img = document.createElement("img");
+      if (loadedAssets.current.has(src)) return;
+  
+      const img = new Image();
       img.src = src;
       img.onload = () => {
-        loadedAssets.add(src);
+        loadedAssets.current.add(src);
         setLoadedCount((prev) => prev + 1);
       };
     });
