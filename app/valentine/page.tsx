@@ -2,6 +2,7 @@
 
 import { JSX, useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function ValentineProposal(): JSX.Element {
   const [accepted, setAccepted] = useState<boolean>(false);
@@ -21,53 +22,36 @@ export default function ValentineProposal(): JSX.Element {
     <>
       <style jsx>{`
         @keyframes pink-gradient {
-          0% {
-            background: rgba(255, 182, 193, 0.8); /* Light pink with a slight transparency */
-          }
-          50% {
-            background: rgba(255, 105, 180, 0.8); /* Slightly darker pink */
-          }
-          100% {
-            background: rgba(255, 182, 193, 0.8); /* Light pink with a slight transparency */
-          }
+          0% { background: rgba(255, 182, 193, 0.8); }
+          50% { background: rgba(255, 105, 180, 0.8); }
+          100% { background: rgba(255, 182, 193, 0.8); }
         }
-
         .gradient-background {
-          background: rgba(255, 182, 193, 0.8); /* Light pink with transparency */
-          animation: pink-gradient 6s ease infinite; /* Smooth animation of color shift */
+          animation: pink-gradient 6s ease infinite;
         }
-
         .text-shadow {
-          text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Soft dark shadow for text */
+          text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
         }
-
         .button-shadow {
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Subtle shadow for buttons */
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
-
         .image-shadow {
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Strong shadow for images */
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
-
         .gradient-text {
-          background: linear-gradient(45deg, #ff7f7f, #ff1493); /* Pink to hot pink gradient */
+          background: linear-gradient(45deg, #ff7f7f, #ff1493);
           -webkit-background-clip: text;
-          color: transparent; /* Makes text transparent so background shows */
+          color: transparent;
           font-weight: bold;
         }
       `}</style>
 
-      <div
-        className="relative flex flex-col items-center justify-center min-h-screen text-center p-4 overflow-hidden gradient-background"
-      >
+      <div className="relative flex flex-col items-center justify-center min-h-screen text-center p-4 overflow-hidden gradient-background">
         {!accepted ? (
           <div
             className="absolute inset-0 w-full h-full bg-cover bg-center"
             style={{
               backgroundImage: "url('/Image3.JPG')",
-              backgroundSize: "auto", // Makes the image fill the container without distortion
-              backgroundPosition: "center", // Centers the image
-              backgroundRepeat: "no-repeat",
               filter: "blur(3px) brightness(0.7)",
             }}
           ></div>
@@ -82,7 +66,6 @@ export default function ValentineProposal(): JSX.Element {
           >
             <source src="/video.MP4" type="video/mp4" />
           </video>
-
         )}
         <div className="relative z-10 flex flex-col items-center">
           {!accepted ? (
@@ -136,30 +119,50 @@ export default function ValentineProposal(): JSX.Element {
                 🎈🎉💖
               </motion.div>
               <div className="flex space-x-4 mt-6">
-                <motion.img
-                  src="/Image1.JPG"
-                  alt="Romantic moment 1"
-                  className="w-64 rounded-lg shadow-lg opacity-70 image-shadow"
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 0.7, y: [-10, 10, -10] }}
                   transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
-                />
-                <motion.img
-                  src="/Image2.JPG"
-                  alt="Romantic moment 2"
-                  className="w-64 rounded-lg shadow-lg opacity-70 image-shadow"
+                >
+                  <Image
+                    src="/Image1.JPG"
+                    alt="Romantic moment 1"
+                    width={250}
+                    height={250}
+                    priority
+                    className="rounded-lg shadow-lg opacity-70 image-shadow"
+                  />
+                </motion.div>
+
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 0.7, y: [-10, 10, -10] }}
                   transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
-                />
-                <motion.img
-                  src="/Image3.JPG"
-                  alt="Romantic moment 3"
-                  className="w-64 rounded-lg shadow-lg opacity-70 image-shadow"
+                >
+                  <Image
+                    src="/Image2.JPG"
+                    alt="Romantic moment 2"
+                    width={250}
+                    height={250}
+                    priority
+                    className="rounded-lg shadow-lg opacity-70 image-shadow"
+                  />
+                </motion.div>
+
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 0.7, y: [-10, 10, -10] }}
                   transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
-                />
+                >
+                  <Image
+                    src="/Image3.JPG"
+                    alt="Romantic moment 3"
+                    width={250}
+                    height={250}
+                    priority
+                    className="rounded-lg shadow-lg opacity-70 image-shadow"
+                  />
+                </motion.div>
               </div>
             </motion.div>
           )}
