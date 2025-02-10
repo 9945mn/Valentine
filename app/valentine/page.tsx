@@ -9,6 +9,19 @@ export default function ValentineProposal(): JSX.Element {
   const [noButtonPosition, setNoButtonPosition] = useState<number>(0);
   const [direction, setDirection] = useState<number>(1);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [windowSize, setWindowSize] = useState<{ width: number; height: number }>({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const images = ["/Image1.JPG", "/Image2.JPG", "/Image3.JPG"];
   const totalAssets = images.length;
@@ -67,13 +80,19 @@ export default function ValentineProposal(): JSX.Element {
         </div>
       ) : (
         <div className="relative flex flex-col items-center justify-center min-h-screen text-center p-4 overflow-hidden gradient-background">
-          {/* Frame Container */}
-          <div className="relative z-10 w-full max-w-5xl h-3/4 border-8 border-white rounded-lg shadow-xl overflow-hidden">
-            <img 
-              src="/Image3.JPG" 
-              alt="Valentine Background" 
-              className="w-full h-full object-contain bg-black"
-            />
+          {/* Frame Container with multiple images */}
+          <div
+            className="relative z-10 border-8 border-white rounded-lg shadow-xl overflow-hidden flex"
+            style={{ width: `${windowSize.width * 0.9}px`, height: `${windowSize.height * 0.7}px` }}
+          >
+            {images.map((src, index) => (
+              <img 
+                key={index} 
+                src={src} 
+                alt={`Valentine Background ${index + 1}`} 
+                className="w-1/3 h-full object-cover bg-black"
+              />
+            ))}
           </div>
 
           {/* Content Overlay */}
