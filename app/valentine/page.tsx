@@ -2,7 +2,6 @@
 
 import { JSX, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function ValentineProposal(): JSX.Element {
@@ -12,7 +11,6 @@ export default function ValentineProposal(): JSX.Element {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   const images = ["/Image1.JPG", "/Image2.JPG", "/Image3.JPG"];
-  const video = "/video.MP4";
   const totalAssets = images.length + 1;
   const [loadedCount, setLoadedCount] = useState<number>(0);
   const loadedAssets = new Set();
