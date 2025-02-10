@@ -9,18 +9,59 @@ export default function ValentineProposal(): JSX.Element {
   const [noButtonPosition, setNoButtonPosition] = useState<number>(0);
   const [direction, setDirection] = useState<number>(1);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  
-  // Track loaded images and video
-  const [loadedCount, setLoadedCount] = useState<number>(0);
-  const totalAssets = 4; // 3 images + 1 video
 
+  // Assets list
+  const images = ["/Image1.JPG", "/Image2.JPG", "/Image3.JPG"];
+  const video = "/video.MP4";
+  const totalAssets = images.length + 1; // 3 images + 1 video
+
+  const [loadedCount, setLoadedCount] = useState<number>(0);
+  const loadedAssets = new Set(); // ✅ Prevent duplicate state updates
+
+  // Preload images and track load completion
+  useEffect(() => {
+    images.forEach((src) => {
+      if (loadedAssets.has(src)) return; // Prevent duplicate updates
+
+      const img = document.createElement("img");
+      img.src = src;
+
+      const handleLoad = () => {
+        loadedAssets.add(src);
+        setLoadedCount((prev) => {
+          const newCount = prev + 1;
+          console.log(`✅ Image loaded! ${newCount} / ${totalAssets}`);
+          return newCount;
+        });
+      };
+
+      if (img.complete) {
+        handleLoad();
+      } else {
+        img.onload = handleLoad;
+      }
+    });
+  }, []); // ✅ Runs once on mount
+
+  // Handle video load event
+  const handleVideoLoad = () => {
+    if (!loadedAssets.has(video)) {
+      loadedAssets.add(video);
+      setLoadedCount((prev) => {
+        const newCount = prev + 1;
+        console.log(`🎥 Video loaded! ${newCount} / ${totalAssets}`);
+        return newCount;
+      });
+    }
+  };
+
+  // Check when all assets are loaded
   useEffect(() => {
     if (loadedCount >= totalAssets) {
+      console.log("🎉 All assets loaded! Showing page.");
       setIsLoaded(true);
     }
   }, [loadedCount]);
-
-  const handleLoad = () => setLoadedCount((prev) => prev + 1);
 
   const moveNoButton = (): void => {
     if (noButtonPosition >= 150) {
@@ -40,13 +81,10 @@ export default function ValentineProposal(): JSX.Element {
           100% { background: rgba(255, 182, 193, 0.8); }
         }
         .gradient-background { animation: pink-gradient 6s ease infinite; }
-        .text-shadow { text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); }
-        .button-shadow { box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); }
-        .image-shadow { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
       `}</style>
 
       {!isLoaded ? (
-        // 🔥 Show loading screen until all assets are loaded
+        // 🔥 Loading screen
         <div className="flex items-center justify-center min-h-screen bg-pink-200">
           <motion.div
             className="text-2xl text-pink-700 font-bold"
@@ -75,9 +113,10 @@ export default function ValentineProposal(): JSX.Element {
               controls
               preload="auto"
               style={{ filter: "brightness(0.7)" }}
-              onLoadedData={handleLoad} // Track when video loads
+              onCanPlayThrough={handleVideoLoad} // ✅ More reliable video event
+              onLoadedData={handleVideoLoad} // ✅ Backup event for video
             >
-              <source src="/video.MP4" type="video/mp4" />
+              <source src={video} type="video/mp4" />
             </video>
           )}
 
@@ -85,7 +124,7 @@ export default function ValentineProposal(): JSX.Element {
             {!accepted ? (
               <>
                 <motion.h1
-                  className="text-4xl md:text-5xl mb-6 text-white drop-shadow-lg text-shadow"
+                  className="text-4xl md:text-5xl mb-6 text-white drop-shadow-lg"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ duration: 0.5 }}
@@ -95,12 +134,12 @@ export default function ValentineProposal(): JSX.Element {
                 <div className="flex space-x-6 relative">
                   <button
                     onClick={() => setAccepted(true)}
-                    className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 text-lg rounded-full shadow-lg button-shadow"
+                    className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 text-lg rounded-full shadow-lg"
                   >
                     Yes
                   </button>
                   <motion.button
-                    className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 text-lg rounded-full shadow-lg button-shadow"
+                    className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 text-lg rounded-full shadow-lg"
                     animate={{ x: noButtonPosition }}
                     transition={{ type: "spring", stiffness: 300, damping: 10 }}
                     onMouseEnter={moveNoButton}
@@ -117,7 +156,7 @@ export default function ValentineProposal(): JSX.Element {
                 className="flex flex-col items-center"
               >
                 <motion.h1
-                  className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg text-shadow"
+                  className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg"
                   initial={{ y: 0 }}
                   animate={{ y: [-10, 10, -10] }}
                   transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
@@ -133,7 +172,7 @@ export default function ValentineProposal(): JSX.Element {
                   🎈🎉💖
                 </motion.div>
                 <div className="flex space-x-4 mt-6">
-                  {["Image1.JPG", "Image2.JPG", "Image3.JPG"].map((img, index) => (
+                  {images.map((img, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, y: 20 }}
@@ -141,13 +180,18 @@ export default function ValentineProposal(): JSX.Element {
                       transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
                     >
                       <Image
-                        src={`/${img}`}
+                        src={img}
                         alt={`Romantic moment ${index + 1}`}
                         width={250}
                         height={250}
                         priority
-                        className="rounded-lg shadow-lg opacity-70 image-shadow"
-                        onLoad={handleLoad} // Track when images load
+                        className="rounded-lg shadow-lg opacity-70"
+                        onLoad={() => {
+                          if (!loadedAssets.has(img)) {
+                            loadedAssets.add(img);
+                            setLoadedCount((prev) => prev + 1);
+                          }
+                        }}
                       />
                     </motion.div>
                   ))}
