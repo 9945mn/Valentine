@@ -64,7 +64,7 @@ export default function ValentineProposal(): JSX.Element {
           <div
             className="absolute inset-0 w-full h-full bg-cover bg-center"
             style={{
-              backgroundImage: "url('/Background.JPG')",
+              backgroundImage: "url('/Image3.JPG')",
               backgroundSize: "auto", // Makes the image fill the container without distortion
               backgroundPosition: "center", // Centers the image
               backgroundRepeat: "no-repeat",
@@ -73,14 +73,16 @@ export default function ValentineProposal(): JSX.Element {
           ></div>
         ) : (
           <video
-            className="absolute inset-0 w-full h-full object-cover" // Ensures the video covers the entire area
+            className="absolute inset-0 w-full h-full object-cover"
             autoPlay
             loop
             controls
+            preload="auto"
             style={{ filter: "brightness(0.7)" }}
           >
-            <source src="/romantic_video.mp4" type="video/mp4" />
+            <source src="/video.MP4" type="video/mp4" />
           </video>
+
         )}
         <div className="relative z-10 flex flex-col items-center">
           {!accepted ? (
@@ -145,6 +147,14 @@ export default function ValentineProposal(): JSX.Element {
                 <motion.img
                   src="/Image2.JPG"
                   alt="Romantic moment 2"
+                  className="w-64 rounded-lg shadow-lg opacity-70 image-shadow"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 0.7, y: [-10, 10, -10] }}
+                  transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+                />
+                <motion.img
+                  src="/Image3.JPG"
+                  alt="Romantic moment 3"
                   className="w-64 rounded-lg shadow-lg opacity-70 image-shadow"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 0.7, y: [-10, 10, -10] }}
