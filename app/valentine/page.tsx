@@ -73,14 +73,16 @@ export default function ValentineProposal(): JSX.Element {
           ></div>
         ) : (
           <video
-            className="absolute inset-0 w-full h-full object-cover" // Ensures the video covers the entire area
+            className="absolute inset-0 w-full h-full object-cover"
             autoPlay
             loop
             controls
+            preload="auto"
             style={{ filter: "brightness(0.7)" }}
           >
             <source src="/video.MP4" type="video/mp4" />
           </video>
+
         )}
         <div className="relative z-10 flex flex-col items-center">
           {!accepted ? (
