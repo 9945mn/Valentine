@@ -18,7 +18,7 @@ export default function ValentineProposal(): JSX.Element {
   useEffect(() => {
     images.forEach((src) => {
       if (loadedAssets.current.has(src)) return;
-  
+
       const img = new Image();
       img.src = src;
       img.onload = () => {
@@ -67,15 +67,17 @@ export default function ValentineProposal(): JSX.Element {
         </div>
       ) : (
         <div className="relative flex flex-col items-center justify-center min-h-screen text-center p-4 overflow-hidden gradient-background">
-          <div
-            className="absolute inset-0 w-full h-full bg-cover bg-center"
-            style={{
-              backgroundImage: "url('/Image3.JPG')",
-              filter: "blur(3px) brightness(0.7)",
-            }}
-          ></div>
+          {/* Frame Container */}
+          <div className="relative z-10 w-full max-w-5xl h-3/4 border-8 border-white rounded-lg shadow-xl overflow-hidden">
+            <img 
+              src="/Image3.JPG" 
+              alt="Valentine Background" 
+              className="w-full h-full object-contain bg-black"
+            />
+          </div>
 
-          <div className="relative z-10 flex flex-col items-center">
+          {/* Content Overlay */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-20 p-6">
             <motion.h1
               className="text-4xl md:text-5xl mb-6 text-white drop-shadow-lg"
               initial={{ scale: 0 }}
