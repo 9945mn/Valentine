@@ -5,7 +5,10 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function AcceptedPage() {
-  const images = ["/Image9.JPG", "/Image10.JPG", "/Image3.JPG"];
+  const images = [
+    "/Image9.JPG",
+    "/Image10.JPG",
+  ];
   const video = "/video.MP4";
   const [mediaLoaded, setMediaLoaded] = useState(false);
   const [loadingDelayOver, setLoadingDelayOver] = useState(false);
@@ -14,7 +17,6 @@ export default function AcceptedPage() {
     let loadedCount = 0;
     const totalAssets = images.length + 1; // +1 for video
 
-    // Load images
     images.forEach((src) => {
       const img = new window.Image();
       img.src = src;
@@ -22,19 +24,18 @@ export default function AcceptedPage() {
         loadedCount++;
         if (loadedCount === totalAssets) {
           setMediaLoaded(true);
-          setTimeout(() => setLoadingDelayOver(true), 8000); // ⏳ 8 seconds delay
+          setTimeout(() => setLoadingDelayOver(true), 8000); // 8-second delay restored
         }
       };
     });
 
-    // Load video
     const vid = document.createElement("video");
     vid.src = video;
     vid.onloadeddata = () => {
       loadedCount++;
       if (loadedCount === totalAssets) {
         setMediaLoaded(true);
-        setTimeout(() => setLoadingDelayOver(true), 8000); // ⏳ 8 seconds delay
+        setTimeout(() => setLoadingDelayOver(true), 8000); // 8-second delay restored
       }
     };
   }, []);
@@ -45,7 +46,7 @@ export default function AcceptedPage() {
         <motion.div
           className="text-4xl md:text-6xl font-bold text-white"
           style={{
-            textShadow: "2px 2px 5px rgba(0, 0, 0, 0.7)", // Better contrast
+            textShadow: "2px 2px 5px rgba(0, 0, 0, 0.7)",
           }}
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: [20, -20, 20] }}
@@ -54,7 +55,7 @@ export default function AcceptedPage() {
           IT&apos;S PARTY TIME! 🎉💃🔥
         </motion.div>
 
-        {/* Confetti Celebration */}
+        {/* Confetti Effect */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
           {[...Array(50)].map((_, i) => (
             <div
@@ -80,8 +81,6 @@ export default function AcceptedPage() {
               position: absolute;
               width: 12px;
               height: 12px;
-              background: randomColor();
-              opacity: 1;
               animation: confetti-fall 2s linear infinite;
             }
 
@@ -99,36 +98,13 @@ export default function AcceptedPage() {
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen text-center p-6 overflow-hidden bg-pink-200">
-      {/* Confetti Celebration Inside */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        {[...Array(50)].map((_, i) => (
-          <div
-            key={i}
-            className="confetti"
-            style={{
-              left: `${Math.random() * 100}vw`,
-              animationDuration: `${Math.random() * 2 + 1}s`,
-              backgroundColor: `hsl(${Math.random() * 360}, 100%, 50%)`,
-            }}
-          ></div>
-        ))}
-      </div>
-
       {/* Enlarged Frame with Images, Video, and Overlay Text */}
       <div className="relative z-10 w-full max-w-[85vw] md:max-w-[75vw] lg:max-w-[65vw] h-[75vh] md:h-[85vh] border-8 border-white rounded-lg shadow-xl overflow-hidden bg-pink-200">
         <div className="relative flex flex-row w-full h-full">
-          {/* Left-side Image */}
           <div className="w-1/3 h-full relative">
-            <Image
-              src={images[0]}
-              alt="Left Side Image"
-              layout="fill"
-              objectFit="cover"
-              className="rounded-l-lg"
-            />
+            <Image src={images[0]} alt="Left Side Image" layout="fill" objectFit="cover" className="rounded-l-lg" />
           </div>
 
-          {/* Video in the center */}
           <div className="w-1/3 h-full relative flex items-center justify-center bg-pink-200">
             <video
               className="w-full h-full object-cover rounded-lg"
@@ -137,22 +113,15 @@ export default function AcceptedPage() {
               muted
               playsInline
               disableRemotePlayback
-              onContextMenu={(e) => e.preventDefault()} // Prevents right-click menu
-              controls={false} // Hides default video controls
+              onContextMenu={(e) => e.preventDefault()}
+              controls={false}
             >
               <source src={video} type="video/mp4" />
             </video>
           </div>
 
-          {/* Right-side Image */}
           <div className="w-1/3 h-full relative">
-            <Image
-              src={images[1]}
-              alt="Right Side Image"
-              layout="fill"
-              objectFit="cover"
-              className="rounded-r-lg"
-            />
+            <Image src={images[1]} alt="Right Side Image" layout="fill" objectFit="cover" className="rounded-r-lg" />
           </div>
         </div>
 

@@ -41,7 +41,7 @@ export default function Home() {
       setLoadingDelayOver(true);
 
       // Redirect to next funny page after 10s
-      setTimeout(() => router.push("/nextfunnypage"), 10000);
+      setTimeout(() => router.push("/nextfunnypage"), 12000);
     }, 5000);
   };
 

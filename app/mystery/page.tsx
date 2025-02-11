@@ -7,10 +7,10 @@ import Image from "next/image";
 
 export default function MysteryPage() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [loadingDelayOver, setLoadingDelayOver] = useState(false); // New state for 5s delay
+  const [loadingDelayOver, setLoadingDelayOver] = useState(false);
   const [stage, setStage] = useState(0);
+  const [mysteryActive, setMysteryActive] = useState(false);
 
-  // Preload images before rendering
   useEffect(() => {
     const imageSources = ["/Image5.JPG", "/Image6.JPG"];
     let loadedCount = 0;
@@ -22,11 +22,11 @@ export default function MysteryPage() {
         loadedCount++;
         if (loadedCount === imageSources.length) {
           setImagesLoaded(true);
-          
-          // Start 5s surprise-themed loading delay
+
           setTimeout(() => {
             setLoadingDelayOver(true);
-            setTimeout(() => setStage(1), 5000); // 5s delay before showing button
+            setMysteryActive(true);
+            setTimeout(() => setStage(1), 5000);
           }, 5000);
         }
       };
@@ -38,38 +38,29 @@ export default function MysteryPage() {
 
   if (!imagesLoaded || !loadingDelayOver) {
     return (
-      <div className="flex items-center justify-center min-h-screen surprise-background">
+      <div className="flex items-center justify-center min-h-screen mystery-loading">
         <motion.div
-          className="text-3xl md:text-5xl font-bold text-yellow-300 surprise-text"
+          className="text-3xl md:text-5xl font-bold text-yellow-300 mystery-text"
           initial={{ opacity: 0 }}
           animate={{ opacity: [0, 1, 0], scale: [1, 1.1, 1] }}
           transition={{ duration: 1.5, repeat: Infinity }}
         >
-          Loading Surprise... 🎁
+          Loading the Unknown... 🔮
         </motion.div>
 
-        {/* Surprise-Themed Loading Animation */}
         <style>
           {`
-            @keyframes surprise-bg {
-              0% { background: #FFD700; }  /* Gold */
-              50% { background: #FF8C00; }  /* Dark Orange */
-              100% { background: #FFD700; }
-            }
-
-            .surprise-background {
-              animation: surprise-bg 2s infinite alternate;
-            }
-
-            @keyframes glowing {
-              0% { opacity: 0.3; text-shadow: 0 0 5px #fff; }
+            @keyframes flicker {
+              0% { opacity: 0.2; text-shadow: 0 0 5px #fff; }
               50% { opacity: 1; text-shadow: 0 0 20px #fff; }
-              100% { opacity: 0.3; text-shadow: 0 0 5px #fff; }
+              100% { opacity: 0.2; text-shadow: 0 0 5px #fff; }
             }
-
-            .surprise-text {
-              animation: glowing 1.5s infinite;
-              text-shadow: 0px 0px 15px rgba(255, 255, 0, 0.9);
+            .mystery-text {
+              animation: flicker 1.5s infinite;
+            }
+            .mystery-loading {
+              background: radial-gradient(circle, #3a1c71, #d76d77, #ffaf7b);
+              animation: mystery-bg 3s infinite alternate;
             }
           `}
         </style>
@@ -78,13 +69,13 @@ export default function MysteryPage() {
   }
 
   return (
-    <div
-      className="relative w-full min-h-screen flex flex-col items-center justify-center text-center font-mono overflow-hidden"
-      style={{
-        background: "linear-gradient(135deg, #200122, #6f0000, #000000)",
-        color: "#00FF41", // Neon green (matrix-like)
-      }}
-    >
+    <div className={`relative w-full min-h-screen flex flex-col items-center justify-center text-center font-mono overflow-hidden ${mysteryActive ? "mystery-background" : ""}`}>
+      {/* Mist & Particles */}
+      <div className="mist"></div>
+      <div className="mist2"></div>
+      <div className="particles"></div>
+
+      {/* Image Container */}
       <div className="absolute inset-0 w-full h-full flex items-center justify-center">
         <div className="relative w-[95vw] h-[90vh] max-w-6xl max-h-[90vh] flex flex-row overflow-hidden rounded-lg shadow-lg border-4 border-white">
           <div className="w-1/2 h-full relative">
@@ -108,23 +99,22 @@ export default function MysteryPage() {
         </div>
       </div>
 
-      {/* Stage 0: Show initial message */}
+      {/* Mystery Message */}
       <AnimatePresence>
         {stage === 0 && (
           <motion.h1
-            className="text-4xl font-bold relative z-10 mt-8"
+            className="text-4xl font-bold relative z-10 mt-8 mystery-glow"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -50 }}
             transition={{ duration: 1 }}
-            style={{ textShadow: "0 0 10px #FF0000, 0 0 20px #FF0000" }} // Glowing red effect
           >
-            Or do you think this webpage is all about you?
+            Something strange is happening...
           </motion.h1>
         )}
       </AnimatePresence>
 
-      {/* Stage 1: Show the button and text only after Stage 0 disappears */}
+      {/* Secret Reveal */}
       {stage === 1 && (
         <motion.div
           className="relative z-10 mt-8"
@@ -132,28 +122,85 @@ export default function MysteryPage() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5 }}
         >
-          <h2
-            className="text-2xl font-bold mb-4"
-            style={{ textShadow: "0 0 8px #00FF41" }} // Neon green glow
-          >
-            If you want to know, click this button
+          <h2 className="text-2xl font-bold mb-4 mystery-text">
+            Want to discover the truth?
           </h2>
           <Link href="/valentine">
             <motion.button
               whileHover={{ scale: 1.2, rotate: -5 }}
               whileTap={{ scale: 0.9, rotate: 5 }}
-              className="px-6 py-3 rounded-lg shadow-md transition"
-              style={{
-                background: "linear-gradient(135deg, #ff0000, #ff7300)",
-                color: "#fff",
-                textShadow: "0 0 5px #000",
-              }}
+              className="mystery-button"
             >
               Reveal the Secret
             </motion.button>
           </Link>
         </motion.div>
       )}
+
+      <style>
+        {`
+          /* New Mysterious Background */
+          .mystery-background {
+            background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
+            transition: background 3s ease-in-out;
+          }
+
+          /* Glowing Text */
+          .mystery-glow {
+            text-shadow: 0 0 10px #FF00FF, 0 0 20px #FF00FF;
+          }
+
+          /* Floating Mist */
+          .mist, .mist2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/mist.png') repeat-x;
+            opacity: 0.5;
+          }
+          .mist {
+            animation: mistMove 15s linear infinite;
+          }
+          .mist2 {
+            animation: mistMove 20s linear infinite reverse;
+          }
+          @keyframes mistMove {
+            0% { transform: translateX(-10%) translateY(-5%); }
+            50% { transform: translateX(10%) translateY(5%); }
+            100% { transform: translateX(-10%) translateY(-5%); }
+          }
+
+          /* Sparkling Particles */
+          .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            opacity: 0.3;
+            animation: sparkle 10s infinite alternate;
+          }
+          @keyframes sparkle {
+            0% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 0.1; }
+          }
+
+          /* Mystery Button */
+          .mystery-button {
+            padding: 12px 24px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #ff00ff, #ff7300);
+            color: #fff;
+            text-shadow: 0 0 5px #000;
+            transition: all 0.3s ease-in-out;
+          }
+          .mystery-button:hover {
+            box-shadow: 0 0 15px #ff00ff;
+          }
+        `}
+      </style>
     </div>
   );
 }

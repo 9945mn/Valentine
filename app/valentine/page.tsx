@@ -61,12 +61,6 @@ export default function ValentineProposal(): JSX.Element {
         }
       `}</style>
 
-      {/* Background Music */}
-      <audio autoPlay loop>
-        <source src="/romantic-music.mp3" type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio>
-
       {/* Show loading screen until images are loaded and delay is over */}
       {!loadingDelayOver ? (
         <div className="flex items-center justify-center min-h-screen bg-pink-200">

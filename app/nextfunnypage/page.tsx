@@ -20,8 +20,8 @@ export default function NextFunnyPage() {
       // Start 5s annoying loading delay
       setTimeout(() => {
         setLoadingDelayOver(true);
-        setTimeout(() => setShowButton(true), 5000); // 5s delay before showing button
-      }, 5000);
+        setTimeout(() => setShowButton(true), 8000); // 5s delay before showing button
+      }, 8000);
     };
   }, []);
 
