@@ -10,18 +10,23 @@ export default function ValentineProposal(): JSX.Element {
   const [direction, setDirection] = useState<number>(1);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [windowSize, setWindowSize] = useState<{ width: number; height: number }>({
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: 0, // Default values to avoid SSR issues
+    height: 0,
   });
-
+  
   useEffect(() => {
-    const handleResize = () => {
+    if (typeof window !== "undefined") {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+  
+      const handleResize = () => {
+        setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+      };
+  
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
   }, []);
+  
 
   const images = ["/Image1.JPG", "/Image2.JPG", "/Image3.JPG"];
   const totalAssets = images.length;
