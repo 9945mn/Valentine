@@ -41,9 +41,12 @@ export default function AcceptedPage() {
 
   if (!mediaLoaded || !loadingDelayOver) {
     return (
-      <div className="flex items-center justify-center min-h-screen celebration-background">
+      <div className="flex items-center justify-center min-h-screen celebration-background overflow-hidden">
         <motion.div
-          className="text-4xl md:text-6xl font-bold celebration-text"
+          className="text-4xl md:text-6xl font-bold text-white"
+          style={{
+            textShadow: "2px 2px 5px rgba(0, 0, 0, 0.7)", // Better contrast
+          }}
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: [20, -20, 20] }}
           transition={{ duration: 0.3, repeat: Infinity, repeatType: "reverse" }}
@@ -51,7 +54,21 @@ export default function AcceptedPage() {
           IT&apos;S PARTY TIME! 🎉💃🔥
         </motion.div>
 
-        {/* Celebration Confetti & Background Animation */}
+        {/* Confetti Celebration */}
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+          {[...Array(50)].map((_, i) => (
+            <div
+              key={i}
+              className="confetti"
+              style={{
+                left: `${Math.random() * 100}vw`,
+                animationDuration: `${Math.random() * 2 + 1}s`,
+                backgroundColor: `hsl(${Math.random() * 360}, 100%, 50%)`,
+              }}
+            ></div>
+          ))}
+        </div>
+
         <style>
           {`
             @keyframes confetti-fall {
@@ -76,8 +93,14 @@ export default function AcceptedPage() {
             }
           `}
         </style>
+      </div>
+    );
+  }
 
-        {/* Generate 50 Confetti Pieces 🎊 */}
+  return (
+    <div className="relative flex flex-col items-center justify-center min-h-screen text-center p-6 overflow-hidden bg-pink-200">
+      {/* Confetti Celebration Inside */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
         {[...Array(50)].map((_, i) => (
           <div
             key={i}
@@ -90,69 +113,68 @@ export default function AcceptedPage() {
           ></div>
         ))}
       </div>
-    );
-  }
 
-  return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen text-center p-6 overflow-hidden bg-pink-200">
-      {/* Frame containing two images + video in the center */}
-      <div className="relative z-10 w-full max-w-[80vw] md:max-w-[70vw] lg:max-w-[60vw] aspect-video border-8 border-white rounded-lg shadow-xl overflow-hidden flex bg-pink-200">
-        {/* Left-side Image */}
-        <div className="w-1/3 h-full relative">
-          <Image
-            src={images[0]} // Left image
-            alt="Left Side Image"
-            layout="fill"
-            objectFit="cover"
-            className="rounded-l-lg"
-          />
+      {/* Enlarged Frame with Images, Video, and Overlay Text */}
+      <div className="relative z-10 w-full max-w-[85vw] md:max-w-[75vw] lg:max-w-[65vw] h-[75vh] md:h-[85vh] border-8 border-white rounded-lg shadow-xl overflow-hidden bg-pink-200">
+        <div className="relative flex flex-row w-full h-full">
+          {/* Left-side Image */}
+          <div className="w-1/3 h-full relative">
+            <Image
+              src={images[0]}
+              alt="Left Side Image"
+              layout="fill"
+              objectFit="cover"
+              className="rounded-l-lg"
+            />
+          </div>
+
+          {/* Video in the center */}
+          <div className="w-1/3 h-full relative flex items-center justify-center bg-pink-200">
+            <video
+              className="w-full h-full object-cover rounded-lg"
+              autoPlay
+              loop
+              muted
+              playsInline
+              disableRemotePlayback
+              onContextMenu={(e) => e.preventDefault()} // Prevents right-click menu
+              controls={false} // Hides default video controls
+            >
+              <source src={video} type="video/mp4" />
+            </video>
+          </div>
+
+          {/* Right-side Image */}
+          <div className="w-1/3 h-full relative">
+            <Image
+              src={images[1]}
+              alt="Right Side Image"
+              layout="fill"
+              objectFit="cover"
+              className="rounded-r-lg"
+            />
+          </div>
         </div>
 
-        {/* Video in the center with matching background color */}
-        <div className="w-1/3 h-full relative flex items-center justify-center bg-pink-200">
-          <video
-            className="w-full h-full object-contain rounded-lg"
-            autoPlay
-            loop
-            muted
-            playsInline
-            disableRemotePlayback
-            onContextMenu={(e) => e.preventDefault()} // Prevents right-click menu
-            controls={false} // Hides default video controls
+        {/* Overlay Text on Top of Media */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center bg-black bg-opacity-30">
+          <motion.h1
+            className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: [-10, 10, -10] }}
+            transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
           >
-            <source src={video} type="video/mp4" />
-          </video>
+            Yay! ❤️ Can&apos;t wait to celebrate with you!
+          </motion.h1>
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: [-10, 10, -10], opacity: 1 }}
+            transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
+            className="text-2xl md:text-3xl text-white"
+          >
+            🎈🎉💖
+          </motion.div>
         </div>
-
-        {/* Right-side Image */}
-        <div className="w-1/3 h-full relative">
-          <Image
-            src={images[1]} // Right image
-            alt="Right Side Image"
-            layout="fill"
-            objectFit="cover"
-            className="rounded-r-lg"
-          />
-        </div>
-      </div>
-
-      <div className="relative z-10 flex flex-col items-center mt-6">
-        <motion.h1
-          className="text-5xl font-bold text-white drop-shadow-lg mb-6"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          Yay! ❤️ Can&apos;t wait to celebrate with you!
-        </motion.h1>
-        <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: [-20, 20, -20], opacity: 1 }}
-          transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
-          className="text-3xl"
-        >
-          🎈🎉💖
-        </motion.div>
       </div>
     </div>
   );
