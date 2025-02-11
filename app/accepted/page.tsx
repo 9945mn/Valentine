@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function AcceptedPage() {
-  const images = ["/Image1.JPG", "/Image2.JPG", "/Image3.JPG"];
+  const images = ["/Image9.JPG", "/Image10.JPG", "/Image3.JPG"];
   const video = "/video.MP4";
   const [mediaLoaded, setMediaLoaded] = useState(false);
   const [loadingDelayOver, setLoadingDelayOver] = useState(false);
@@ -51,7 +51,7 @@ export default function AcceptedPage() {
           IT&apos;S PARTY TIME! 🎉💃🔥
         </motion.div>
 
-        {/* Celebration Confetti & Crazy Background */}
+        {/* Celebration Confetti & Background Animation */}
         <style>
           {`
             @keyframes confetti-fall {
@@ -74,26 +74,6 @@ export default function AcceptedPage() {
               animation: gradient-move 2s infinite linear;
               overflow: hidden;
             }
-
-            @keyframes gradient-move {
-              0% { background-position: 0% 50%; }
-              50% { background-position: 100% 50%; }
-              100% { background-position: 0% 50%; }
-            }
-
-            @keyframes text-pop {
-              0% { transform: scale(1) rotate(0deg); }
-              25% { transform: scale(1.3) rotate(3deg); }
-              50% { transform: scale(1) rotate(-3deg); }
-              75% { transform: scale(1.4) rotate(5deg); }
-              100% { transform: scale(1) rotate(0deg); }
-            }
-
-            .celebration-text {
-              animation: text-pop 0.3s infinite;
-              text-shadow: 0px 0px 15px rgba(255, 255, 255, 1);
-              color: #ffffff;
-            }
           `}
         </style>
 
@@ -115,20 +95,45 @@ export default function AcceptedPage() {
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen text-center p-6 overflow-hidden bg-pink-200">
-      {/* Video inside a properly sized frame */}
-      <div className="relative z-10 w-full max-w-[80vw] md:max-w-[60vw] lg:max-w-[50vw] aspect-video border-8 border-white rounded-lg shadow-xl overflow-hidden">
-        <video
-          className="w-full h-full rounded-lg"
-          autoPlay
-          loop
-          muted
-          playsInline
-          disableRemotePlayback
-          onContextMenu={(e) => e.preventDefault()} // Prevents right-click menu
-          controls={false} // Hides default video controls
-        >
-          <source src={video} type="video/mp4" />
-        </video>
+      {/* Frame containing two images + video in the center */}
+      <div className="relative z-10 w-full max-w-[80vw] md:max-w-[70vw] lg:max-w-[60vw] aspect-video border-8 border-white rounded-lg shadow-xl overflow-hidden flex bg-pink-200">
+        {/* Left-side Image */}
+        <div className="w-1/3 h-full relative">
+          <Image
+            src={images[0]} // Left image
+            alt="Left Side Image"
+            layout="fill"
+            objectFit="cover"
+            className="rounded-l-lg"
+          />
+        </div>
+
+        {/* Video in the center with matching background color */}
+        <div className="w-1/3 h-full relative flex items-center justify-center bg-pink-200">
+          <video
+            className="w-full h-full object-contain rounded-lg"
+            autoPlay
+            loop
+            muted
+            playsInline
+            disableRemotePlayback
+            onContextMenu={(e) => e.preventDefault()} // Prevents right-click menu
+            controls={false} // Hides default video controls
+          >
+            <source src={video} type="video/mp4" />
+          </video>
+        </div>
+
+        {/* Right-side Image */}
+        <div className="w-1/3 h-full relative">
+          <Image
+            src={images[1]} // Right image
+            alt="Right Side Image"
+            layout="fill"
+            objectFit="cover"
+            className="rounded-r-lg"
+          />
+        </div>
       </div>
 
       <div className="relative z-10 flex flex-col items-center mt-6">
@@ -148,26 +153,6 @@ export default function AcceptedPage() {
         >
           🎈🎉💖
         </motion.div>
-
-        <div className="flex space-x-4 mt-6">
-          {images.map((img, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 0.7, y: [-10, 10, -10] }}
-              transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
-            >
-              <Image
-                src={img}
-                alt={`Romantic moment ${index + 1}`}
-                width={250}
-                height={250}
-                priority
-                className="rounded-lg shadow-lg opacity-70"
-              />
-            </motion.div>
-          ))}
-        </div>
       </div>
     </div>
   );
