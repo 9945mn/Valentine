@@ -7,6 +7,7 @@ import Image from "next/image";
 
 export default function MysteryPage() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [loadingDelayOver, setLoadingDelayOver] = useState(false); // New state for 5s delay
   const [stage, setStage] = useState(0);
 
   // Preload images before rendering
@@ -21,6 +22,12 @@ export default function MysteryPage() {
         loadedCount++;
         if (loadedCount === imageSources.length) {
           setImagesLoaded(true);
+          
+          // Start 5s surprise-themed loading delay
+          setTimeout(() => {
+            setLoadingDelayOver(true);
+            setTimeout(() => setStage(1), 5000); // 5s delay before showing button
+          }, 5000);
         }
       };
       img.onerror = () => {
@@ -29,17 +36,43 @@ export default function MysteryPage() {
     });
   }, []);
 
-  useEffect(() => {
-    if (imagesLoaded) {
-      const timer = setTimeout(() => setStage(1), 5000); // Show next stage after 5s
-      return () => clearTimeout(timer);
-    }
-  }, [imagesLoaded]);
-
-  if (!imagesLoaded) {
+  if (!imagesLoaded || !loadingDelayOver) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-black text-neon-green text-2xl">
-        Loading...
+      <div className="flex items-center justify-center min-h-screen surprise-background">
+        <motion.div
+          className="text-3xl md:text-5xl font-bold text-yellow-300 surprise-text"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 1, 0], scale: [1, 1.1, 1] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        >
+          Loading Surprise... 🎁
+        </motion.div>
+
+        {/* Surprise-Themed Loading Animation */}
+        <style>
+          {`
+            @keyframes surprise-bg {
+              0% { background: #FFD700; }  /* Gold */
+              50% { background: #FF8C00; }  /* Dark Orange */
+              100% { background: #FFD700; }
+            }
+
+            .surprise-background {
+              animation: surprise-bg 2s infinite alternate;
+            }
+
+            @keyframes glowing {
+              0% { opacity: 0.3; text-shadow: 0 0 5px #fff; }
+              50% { opacity: 1; text-shadow: 0 0 20px #fff; }
+              100% { opacity: 0.3; text-shadow: 0 0 5px #fff; }
+            }
+
+            .surprise-text {
+              animation: glowing 1.5s infinite;
+              text-shadow: 0px 0px 15px rgba(255, 255, 0, 0.9);
+            }
+          `}
+        </style>
       </div>
     );
   }

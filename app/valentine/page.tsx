@@ -8,13 +8,7 @@ export default function ValentineProposal(): JSX.Element {
   const router = useRouter();
   const [noButtonPosition, setNoButtonPosition] = useState<number>(0);
   const [direction, setDirection] = useState<number>(1);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("resize", () => {});
-    }
-  }, []);
+  const [loadingDelayOver, setLoadingDelayOver] = useState<boolean>(false); // New state
 
   const images = ["/Image1.JPG", "/Image2.JPG", "/Image3.JPG"];
   const totalAssets = images.length;
@@ -36,7 +30,9 @@ export default function ValentineProposal(): JSX.Element {
 
   useEffect(() => {
     if (loadedCount >= totalAssets) {
-      setIsLoaded(true);
+      setTimeout(() => {
+        setLoadingDelayOver(true); // After 5 seconds, show the actual content
+      }, 5000);
     }
   }, [loadedCount]);
 
@@ -46,7 +42,7 @@ export default function ValentineProposal(): JSX.Element {
     } else if (noButtonPosition <= -300) {
       setDirection(1);
     }
-    setNoButtonPosition(noButtonPosition + 160 * direction); // Doubled speed
+    setNoButtonPosition(noButtonPosition + 160 * direction);
   };
 
   return (
@@ -71,7 +67,8 @@ export default function ValentineProposal(): JSX.Element {
         Your browser does not support the audio element.
       </audio>
 
-      {!isLoaded ? (
+      {/* Show loading screen until images are loaded and delay is over */}
+      {!loadingDelayOver ? (
         <div className="flex items-center justify-center min-h-screen bg-pink-200">
           <motion.div
             className="text-3xl font-bold text-pink-700"
