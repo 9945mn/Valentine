@@ -8,13 +8,13 @@ export default function Home() {
   const [showButton, setShowButton] = useState(false);
   const [showImage, setShowImage] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [loadingDelayOver, setLoadingDelayOver] = useState(false); // 5s delay for scary loading
   const router = useRouter();
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Preload the image before rendering the page
   useEffect(() => {
     const img = new Image();
-    img.src = "/funnyImage.JPG"; // Replace with your image path
+    img.src = "/funnyImage.JPG";
     img.onload = () => {
       setImageLoaded(true);
       console.log("Image preloaded successfully! ✅");
@@ -22,61 +22,104 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // Show the "Proceed?" button after 5 seconds
     const timer = setTimeout(() => setShowButton(true), 5000);
     return () => clearTimeout(timer);
   }, []);
 
   const handleButtonClick = () => {
     if (audioRef.current) {
-      audioRef.current.volume = 0.5; // Set volume
-      audioRef.current.muted = false; // Ensure it's unmuted
+      audioRef.current.volume = 0.5;
+      audioRef.current.muted = false;
       audioRef.current.play().catch((err) => console.log("Autoplay blocked:", err));
     }
 
-    // Hide 404 text and button, show full-screen image & message
     setShowButton(false);
     setShowImage(true);
 
-    // After 10 seconds, redirect to mystery page
-    setTimeout(() => router.push("/mystery"), 10000);
+    // 5s scary loading delay before showing funnyImage
+    setTimeout(() => {
+      setLoadingDelayOver(true);
+
+      // Redirect to next funny page after 10s
+      setTimeout(() => router.push("/nextfunnypage"), 10000);
+    }, 5000);
   };
 
-  if (!imageLoaded) {
+  if (!imageLoaded || (showImage && !loadingDelayOver)) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-black">
+      <div className="flex items-center justify-center min-h-screen scary-background">
         <motion.div
-          className="text-2xl text-white"
+          className="text-3xl md:text-5xl font-bold text-red-500 scary-text"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+          animate={{ opacity: [0, 1, 0], scale: [1, 1.2, 1] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
         >
-          Loading... 🎶
+          Loading... 😱
         </motion.div>
+
+        {/* Scary CSS */}
+        <style>
+          {`
+            @keyframes scary-bg {
+              0% { background: #300000; }
+              50% { background: #200000; }
+              100% { background: #300000; }
+            }
+
+            .scary-background {
+              animation: scary-bg 2s infinite alternate;
+            }
+
+            @keyframes flicker {
+              0% { opacity: 0.2; }
+              50% { opacity: 1; }
+              100% { opacity: 0.2; }
+            }
+
+            .scary-text {
+              animation: flicker 1.5s infinite;
+              text-shadow: 0px 0px 15px rgba(255, 0, 0, 0.8);
+            }
+          `}
+        </style>
       </div>
     );
   }
 
   return (
     <div
-      className="flex flex-col items-center justify-center min-h-screen p-8 text-center relative w-full"
+      className={`flex flex-col items-center justify-center min-h-screen p-8 text-center relative w-full transition-all duration-700 ${
+        showImage ? "bg-crazy-gradient" : "bg-gradient-to-r from-red-900 to-black"
+      }`}
       style={{
-        background: "linear-gradient(135deg, #300000, #000000)",
-        color: "#ff0000",
         fontFamily: "'Creepster', cursive",
       }}
     >
-      {/* Background Music (Initially Paused) */}
+      <style>
+        {`
+          @keyframes crazy-gradient {
+            0% { background: linear-gradient(45deg, #ff0000, #ff6600, #ffff00); }
+            25% { background: linear-gradient(45deg, #00ff00, #00ffff, #0000ff); }
+            50% { background: linear-gradient(45deg, #800080, #ff1493, #ff4500); }
+            75% { background: linear-gradient(45deg, #ff0000, #ff6600, #ffff00); }
+            100% { background: linear-gradient(45deg, #00ff00, #00ffff, #0000ff); }
+          }
+
+          .bg-crazy-gradient {
+            animation: crazy-gradient 4s infinite alternate;
+          }
+        `}
+      </style>
+
       <audio ref={audioRef} loop>
         <source src="/music.mp3" type="audio/mpeg" />
         Your browser does not support the audio element.
       </audio>
 
-      {/* Display the funny image and message after clicking "Proceed?" */}
       {showImage ? (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black">
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
           <img
-            src="/funnyImage.JPG" // Replace with your image
+            src="/funnyImage.JPG"
             alt="Funny Music Image"
             className="absolute inset-0 max-w-full max-h-full w-auto h-auto mx-auto"
           />
@@ -100,20 +143,19 @@ export default function Home() {
               animate={{
                 opacity: 1,
                 scale: 1,
-                rotate: [5, -5, 5], // Slight eerie tilt effect
-                y: [0, -10, 0, 10, 0], // Dancing up & down effect
+                rotate: [5, -5, 5],
+                y: [0, -10, 0, 10, 0],
               }}
               exit={{ opacity: 0, scale: 1.5, rotate: -5 }}
               transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
               style={{
-                textShadow: "0px 0px 10px rgba(255, 0, 0, 0.8)", // Eerie glow effect
+                textShadow: "0px 0px 10px rgba(255, 0, 0, 0.8)",
               }}
             >
               404 Not Found?
             </motion.h1>
           </AnimatePresence>
 
-          {/* Funny "Proceed?" Button (Appears After 5 Seconds) */}
           {showButton && (
             <motion.button
               onClick={handleButtonClick}
@@ -122,7 +164,7 @@ export default function Home() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1 }}
             >
-              Proceed? 😈
+              Proceed? Click Here!!! 😈
             </motion.button>
           )}
         </div>
