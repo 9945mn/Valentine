@@ -130,7 +130,7 @@ export default function Home() {
             transition={{ duration: 1 }}
           >
             Like this music? 🎶  
-            Let&apos;s play it for 10 seconds, please! 😈
+            Let&apos;s play it for few seconds, please! 😈
           </motion.h1>
         </div>
       ) : (
@@ -152,7 +152,7 @@ export default function Home() {
                 textShadow: "0px 0px 10px rgba(255, 0, 0, 0.8)",
               }}
             >
-              404 Not Found?
+              OOPS Somethings Up?
             </motion.h1>
           </AnimatePresence>
 
